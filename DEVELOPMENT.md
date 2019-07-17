@@ -24,3 +24,25 @@ Keep in mind that 1 DB cluster ("lifedb") = 1 user. So everyone who wants to buy
 `cd ships-api`
 `prisma2 lift save`
 `prisma2 lift up`
+
+# Other architecture
+
+The database is managed using the Prisma ORM suite. More specifically, Lift manages DB migrations (including generating the GraphQL schema) and Photon is the JavaScript/TypeScript-based ORM layer.
+
+Apollo Server (to be implemented) is the application layer that exposes Photon's ORM functionality through a HTTP GraphQL API.
+
+NB: this is bridged by generating Photon, which is tied to a specific DB/credentials, and using Photon within Apollo Server's resolvers.
+
+# Work to do
+
+I won't bother implementing/deploying Apollo Server until I have a use case for repeatable query or mutate logic that cannot be implemented with Retool UI's hooked into my Postgres DB. In other words, when I start to build some kind of apps on top of my data.
+
+Step 1 is to put together the schema and generate all the CREATE statements and migrations for the Postgres DB.
+
+Step 2 is to write some one-off scripts to seed some data (e.g. from FB, phone contacts, etc), and use Photon locally to push it up into my DB.
+
+Step 3 is to expose my hacky data wrangled data in Retool, and build some UI's for managing it (including organizing it into circles).
+
+Step 4 is to extend Retool's capabilities with some Lambda functions. For example, I could add "import" buttons that do a pull of Facebook friends. The Lambda functions could use Photon internally to make updates to the DB.
+
+Only then might I start wanting Apollo Server -- if I'm building more of a live-app that needs to perform complex mutations and queries that don't have a 1-to-1 kind of "endpoint/action to static query/mutation" relationship.
