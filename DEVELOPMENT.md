@@ -21,6 +21,8 @@ Keep in mind that 1 DB cluster ("lifedb") = 1 user. So everyone who wants to buy
 
 # DB Migrations
 
+Set the appropriate local variable, then...
+
 `cd ships-api`
 `prisma2 lift save`
 `prisma2 lift up`
